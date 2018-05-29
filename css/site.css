@@ -1,0 +1,553 @@
+/* -------------- general ------------------------------------ */
+/*
+@base_color: #215585;           �������� ����� (������� �����, ���� ������ �� ���� ������, ����� ������)
+@base_darken_color:#183E62;     �����-����� (���� ������, ������������ �� ����� ����� ����� ��� ������-������ ��� hover)
+@lighten_base_color: white;     ����� (���� ������ � ���������, � �������)
+@brigh_color: #D7F734;          ����� ������� (��� � ������� (��������� active), ������ ����� ��� ������� ���� � ������� ���������)
+*/
+
+@font-face {
+    font-family: 'museo';
+    src: url('fonts/museo/museosans_100.eot');
+    src: url('fonts/museo/museosans_100.woff2') format('woff2'),
+    url('fonts/museo/museosans_100.woff') format('woff'),
+    url('fonts/museo/museosans_100.ttf') format('truetype'),
+    url('fonts/museo/museosans_100.svg#museo_sans_cyrl100') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'museo';
+    src: url('fonts/museo/museosans_300.eot');
+    src: url('fonts/museo/museosans_300.woff2') format('woff2'),
+    url('fonts/museo/museosans_300.woff') format('woff'),
+    url('fonts/museo/museosans_300.ttf') format('truetype'),
+    url('fonts/museo/museosans_300.svg#museo_sans_cyrl100') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'museo';
+    src: url('fonts/museo/museosans_500.eot');
+    src: url('fonts/museo/museosans_500.woff2') format('woff2'),
+    url('fonts/museo/museosans_500.woff') format('woff'),
+    url('fonts/museo/museosans_500.ttf') format('truetype'),
+    url('fonts/museo/museosans_500.svg#museo_sans_cyrl100') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'museo';
+    src: url('fonts/museo/museosans_900.eot');
+    src: url('fonts/museo/museosans_900.woff2') format('woff2'),
+    url('fonts/museo/museosans_900.woff') format('woff'),
+    url('fonts/museo/museosans_900.ttf') format('truetype'),
+    url('fonts/museo/museosans_900.svg#museo_sans_cyrl100') format('svg');
+    font-weight: 900;
+    font-style: normal;
+}
+
+html {
+}
+
+/* -------------- page ---------------------------------------- */
+.page{
+    padding:0;
+    margin:0;
+    font-family: 'museo', serif;
+    color:#215585;
+}
+
+/* -------------- header ---------------------------------------- */
+.header{
+    display: flex;
+    flex-direction: row;
+    height:5em;
+    color: #215585;
+}
+
+.header__logo {
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.header__logo img{
+    width: 250px;
+    padding-top:15px;
+    margin: auto auto;
+}
+
+.header__title{
+    display:inline-block;
+    padding:0 2.5%;
+    width:220px;
+    font-weight:900;
+    font-size:18px;
+    text-transform: uppercase;
+    line-height:1em;
+    color:#005985;
+
+    word-wrap:break-word;
+
+}
+
+.header__menu{
+
+}
+
+/* -------------- menu ---------------------------------------- */
+.menu{
+    display: flex;
+    height: 100%;
+}
+
+.menu__item{
+    display:inline-block;
+    color:inherit;
+
+    transition-duration:800ms;
+}
+
+.menu__item:hover{
+    //color:#ADC72A;
+    background-color:inherit;
+    text-decoration:underline;
+
+}
+
+/* --------------------- page__title ---------------------------- */
+
+.page__title{
+    background-color: #215585;
+    background:linear-gradient(to bottom, #215585 40%, #183E62);
+    color: white;
+    font-size:1.5em;
+    font-weight:500;
+    text-align:center;
+    padding: 20px 0 60px 2.5%;
+    margin:0;
+}
+
+.page__content{
+    width:95%;
+    position:relative;
+    top:-40px;
+    margin:0 auto;
+    padding:5px;
+    background-color:white;
+    border: 1px solid #183E62;
+}
+
+/* --------------------- content -------------------------------- */
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.content__item{
+    margin: 8px 10px;
+}
+
+.row{
+    display:flex;
+    flex-direction: row;
+}
+
+.row__item{
+}
+
+.row__item_80{
+    width:80%;
+}
+
+.row__item_80 img{
+    width:100%;
+}
+
+/* ---------------------- popup --------------------------------------- */
+
+.popup{
+    display: none;
+    position: absolute;
+    width: 500px;
+    top: 30%;
+    left: 30%;
+    background-color:white;
+    border: 2px solid #D0F033;
+    border-radius:5px;
+    padding-bottom: 20px;
+}
+
+.popup img {
+    width: 100%;
+}
+
+.popup__title{
+    margin:0;
+    padding: 0.3em 0;
+    font-size:1em;
+    font-weight:normal;
+    text-align:center;
+    background-color:#D0F033;
+}
+
+.popup__form{
+    margin:auto auto;
+}
+
+/*
+#dlgId {
+    display: none;
+    position: absolute;
+    width: 500px;
+    top: 30%;
+    left: 30%;
+    background-color: white;
+    border:1px solid #BDDE1A;
+//padding:10px;
+}*/
+
+/* ---------------------- form ---------------------------------------- */
+
+.form{
+
+}
+
+.form_litle{
+    width:350px;
+    margin:auto auto;
+}
+
+.form__item{
+    margin:15px 0;
+    display:flex;
+    flex-direction:column;
+}
+
+.form__element{
+    border:1px solid #215585;
+    padding: 0.3em 0.8em;
+    color: inherit;
+    font-family: inherit;
+    font-size: 1em;
+    transition-duration:400ms;
+}
+
+.form__element:focus{
+    border:1px solid #D0F033;
+}
+
+.form_big{
+
+}
+
+.form_big .form__item{
+    display: inline-block;
+    width: 100%;
+    margin:10px 0;
+}
+
+.form_big label{
+    display: inline-block;
+    width: 90px;
+}
+
+.form_big__wrapper{
+    display: inline-block;
+}
+
+.form_big__select{
+    display: inline-block;
+    width:400px;
+}
+
+/* ---------------------- ed_place ------------------------------------ */
+
+/*
+.ed_place{
+    display:flex;
+}
+
+.ed_place__chosen{
+    width: 22%;
+    float: left;
+    background-color:#EDF8FF;
+}
+
+.ed_place__buttons{
+
+}
+
+.ed_place__list{
+    width: 22%;
+    float: left;
+    background-color:#EDF8FF;
+}
+
+.ed_place__img{
+    width:50%;
+}
+
+.ed_place h2{
+    font-size:1.2em;
+    margin:0;
+    padding:5px 0;
+    text-align:center;
+
+}
+*/
+
+/* ---------------------- list ----------------------------------- */
+
+.list__chosen{
+    width: 22%;
+    float: left;
+    //background-color:#EDF8FF;
+}
+
+.list__button{
+    padding: 0 5px 0 5px;
+    float: left;
+}
+
+.list__all{
+    width: 22%;
+    float: left;
+    background-color:#EDF8FF;
+}
+
+.list__img-nabor{
+    width:50%;
+}
+
+.list__item{
+    background-color:#EDF8FF;
+    border-bottom: 3px solid white;
+    padding:5px;
+
+}
+
+.list__item p{
+    margin:0;
+    padding:0;
+}
+
+.list__tool{
+}
+
+.list__desc{
+    color:#7BA7D0;
+}
+
+.list__wrapper{
+    
+}
+
+.list__img{
+
+}
+
+/* ---------------------- photo ---------------------------------- */
+
+.photo{
+    padding:0 4px 2px 4px;
+}
+
+.photo__all{
+    background-color: #DBF1FF;
+
+}
+
+.photo__item{
+    background-color: #EDF8FF;
+}
+
+/* ------------------------- btn ---------------------------------*/
+
+.btn{
+    background-color: #215585;
+    color: white;
+    font-family:inherit;
+    font-size:1em;
+    padding: 0.3em 0.8em;
+    border: 1px solid #215585;
+    max-width:200px;
+}
+
+.btn:hover{
+    background-color:#183E62;
+    //color: #215585;
+}
+
+.btn:active{
+    background-color: #D0F033;
+    border:1px solid #D0F033;
+    color: #215585;
+}
+
+/* ---------------------------------------------------------------- */
+
+.v_free_space{
+    margin-bottom:5px;
+}
+
+/* ----------------------------------------------------------------- */
+.arrow{
+    font-size:0;
+    min-width:35px;
+    min-height:40px;
+    background-color: #215585;
+    border: 1px solid #215585;
+    padding: 0.2em 0.8em;
+    color: white;
+}
+
+.arrow_left::before{
+    content: "";
+    height:0;
+    width:0;
+    position:relative;
+    border:10px solid white;
+    border-left-width: 0;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    display:inline-block;
+}
+
+.arrow_right::after{
+    content: "";
+    height:0;
+    width:0;
+    position:relative;
+    border:10px solid white;
+    border-right-width: 0;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    display:inline-block;
+}
+
+.arrow:hover{
+    background-color:#183F64;
+    border:1px solid #183F64;
+}
+
+.arrow:active{
+    background-color: #D0F033;
+    border:1px solid #D0F033;
+    color:#183F64;
+}
+
+
+/* ------------------------------------------------------------------- */
+
+.leftSide {
+    width: 40%;
+    height: 80%;
+    float: left;
+}
+
+.rightside {
+    width: 59%;
+    height: 80%;
+    justify-content: center;
+    align-content: center;
+    overflow: hidden;
+
+}
+
+/*
+.toolImg {
+    max-width: 100%;
+    width:expression(this.width > 500px?"500px" : this.width);
+}
+*/
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: gray;
+}
+
+table {
+    width: 100%;
+}
+th, td {
+    padding: 5px;
+    vertical-align: middle;
+    text-align: left;  
+    border-bottom: 1px solid #ddd;
+}
+
+th{
+    font-weight:500;
+}
+
+tr:hover{
+    background-color: #f5f5f5;
+}
+
+
+.selectedRowR {
+    background-color: #a5a5a5;
+}
+
+.selectedRowL {
+    background-color: #a5a5a5;
+}
+/*
+#dlgId {
+    display: none;
+    position: absolute;
+    width: 500px;
+    top: 30%;
+    left: 30%;
+    background-color: white;
+    border:1px solid #BDDE1A;
+    //padding:10px;
+}
+*/
+
+/*
+div {
+    border: 1px solid black;
+}
+*/
+
+/*
+#mainContainerID {
+    height: 100%;
+}
+*/
+
+
+
+#naborImgHolderID {
+    width: 100%;
+    height: 60%;
+}
+
+.imgIconClass {
+    width: 50px;
+}
+
+

@@ -1,0 +1,1 @@
+<img src="<?=$nabor['nabImg']?>" alt="" class="naborImg">
