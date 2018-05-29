@@ -19,6 +19,7 @@
 </table>
 -->
 
+
 <div>
     <?php
         while ($row = $neToolsToNabList->fetch_assoc()) {

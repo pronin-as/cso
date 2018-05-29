@@ -13,5 +13,5 @@
 
 </section>
 
-<div class="popup" id="dlgId"></div>
+<div class="popup" id="dlgId"> </div>
 
