@@ -523,6 +523,6 @@ function delToolsFromNab(){
     } else {
         $message = "Удалено успешно!";
     }
-    include $viewFolder . "neAddToolsToNabRez.php";
+    include $viewFolder . "neAddToolsToNabRez.php"; //remark
 }
 ?>

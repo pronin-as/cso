@@ -1,0 +1,17 @@
+/css/fonts/*
+/img/Tools/*
+/Scripts/*
+Thumbs.db
+applications.html
+bitnami.css
+config.php
+favicon.ico
+sitetmp.css
+srvreq.php
+.vscode/launch.json
+css/img/Thumbs.db
+css/img/logo.png
+xampp/.modell
+xampp/.modell-usb
+xampp/.version
+index.php
