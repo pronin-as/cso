@@ -34,6 +34,18 @@ function initToolDict(){
                 $("#dlgId").html("");
                 $("#dlgId").css("display","none");
             });
+            
+            $("#editToolDlgCopyButtonID").unbind('click');
+            $("#editToolDlgCopyButtonID").bind('click', function (){
+                $.post("tools.php", {func: "editToolCopy", toolID: $("#tmptoolID").val(), CopyCount: $("#instrCopyDlgID").val()}, function (data){
+                    ttRef();
+                    $("#dlgId").html("");
+                    $("#dlgId").css("display","none");
+                    alert(data);
+                },"html");
+            });    
+            
+            
             $("#editToolDlgSaveButtonID").unbind("click");
             $("#editToolDlgSaveButtonID").bind("click", function () {
                 if($("#operType").val() == "newTool"){

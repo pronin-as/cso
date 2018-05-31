@@ -307,7 +307,7 @@ html {
 /* ---------------------- list ----------------------------------- */
 
 .list__chosen{
-    width: 22%;
+    width: 20%;
     float: left;
     //background-color:#EDF8FF;
 }
@@ -318,7 +318,7 @@ html {
 }
 
 .list__all{
-    width: 22%;
+    width: 20%;
     float: left;
     background-color:#EDF8FF;
 }
@@ -347,7 +347,7 @@ html {
 }
 
 .list__wrapper{
-    
+
 }
 
 .list__img{

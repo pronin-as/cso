@@ -2,11 +2,12 @@
 <html lang="ru">
 <html>
     <head>
+        <?php include "config.php";?>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <script src="/Scripts/jquery-1.7.1.min.js"></script>
-        <script src="/tools.js"></script>
-        <script src="/otdDict.js"></script>
-        <link href="/css/site.css" rel="stylesheet" />
+        <script src=<?=$sitePath?>"/Scripts/jquery-1.7.1.min.js"></script>
+        <script src=<?=$sitePath?>"/tools.js"></script>
+        <script src=<?=$sitePath?>"/otdDict.js"></script>
+        <link href=<?=$sitePath?>"/css/site.css" rel="stylesheet" />
     </head>
     <script type="text/javascript">
         $(document).ready(function () {

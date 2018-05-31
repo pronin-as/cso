@@ -202,6 +202,8 @@
             $(".neToolInNabSelectClassL").bind('click', nabLeftClickS);
             $(".selectedRowL").unbind('click');
             $(".selectedRowL").bind('click', nabLeftClickD);
+            $(".imgIconClass").unbind('click');
+            $(".imgIconClass").bind('click', toolIconShow);
         }, "html");
     }
     
