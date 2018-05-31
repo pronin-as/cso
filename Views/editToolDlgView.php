@@ -14,12 +14,20 @@
         <label for="instrRemarkDlgID">Примечание</label>
         <input class="form__element" type="text" value="<?=$tool["intrRemar"]?>" id="instrRemarkDlgID">
     </div>
-
+    
     <div class="form__item">
         <label for="fileToLoadID">Изображение</label>
         <input type="file" id="fileToLoadID">
     </div>
-
+    <?php
+        if($delButton == 1){
+    echo '<div class="form__item">
+        <label for="instrNameDlgID">Кол-во</label>
+        <input class="form__element" type="text" value="" id="instrCopyDlgID">
+        <button class="btn"  id="editToolDlgCopyButtonID">Создать копии</button>
+    </div>';
+        }
+    ?>
     <div class="form__item_btn">
         <button class="btn"  id="editToolDlgCloseButtonID">Отмена</button>
         <button class="btn"  id="editToolDlgSaveButtonID">Сохранить</button>

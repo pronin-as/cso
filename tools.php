@@ -77,7 +77,10 @@ if(isset($_POST['func']) ) {
         addToolsToNab();
         break;
         case 'delToolsFromNab':
-        delToolsFromNab();
+            delToolsFromNab();
+        break;
+        case 'editToolCopy':
+            editToolCopy();
         break;
     }
 }
@@ -85,7 +88,7 @@ if(isset($_POST['func']) ) {
 function toolsTabRead (){
     include "config.php";
     $db = dbConnect();
-    $toolsList = $db->query("SELECT * FROM instrum WHERE isDeleted = 0");
+    $toolsList = $db->query("SELECT * FROM instrum WHERE isDeleted = 0 ORDER BY instrName");
     include $viewFolder . "toolsTabReadView.php";
     $toolsList->free();
     $db->close();
@@ -130,34 +133,57 @@ function toolCreateDlg(){
 }
 
 function toolCreate(){
+    /********************************* GD *********************************/
+    include "img.php";
     include "config.php";
+
     $isError = FALSE;
     $sStatus = "";
     $db = dbConnect();
     $toolNameTmp = $_POST['instrName'];
     $toolRemarkTmp = $_POST['instrRemark'];
-    $fileInfo = new SplFileInfo($_FILES['fileToLoadID']['name']);
-    $fileExt = $fileInfo->getExtension();
-    $timeStamp = new dateTime();
-    $timeStampformated =  $timeStamp->format('d-m-Y');
-    $newFileName = $timeStamp->format('Ymd_Hisv') . "." . $fileExt;
-    $uploadfile = getcwd() . $uploaddir . $newFileName;
+    if(empty($_FILES['fileToLoadID']['name'])){
+        $timeStamp = new dateTime();
+        $timeStampformated =  $timeStamp->format('d-m-Y');        
+        $uploadfile = getcwd() . $imgDefault;
     
+        $queryTmp = "INSERT INTO instrum (`instrName`, `intrRemar`, `picPath`, `eventDate`) VALUES ('" . $toolNameTmp . "', '" . $toolRemarkTmp . "' , '" . $imgDefault . "' , STR_TO_DATE( '" . $timeStampformated . "', \"%d-%m-%Y\") )";
 
-    $queryTmp = "INSERT INTO instrum (`instrName`, `intrRemar`, `picPath`, `eventDate`) VALUES ('" . $toolNameTmp . "', '" . $toolRemarkTmp . "' , '" . $uploaddir . $newFileName . "' , STR_TO_DATE( '" . $timeStampformated . "', \"%d-%m-%Y\") )";
+        if($db->query($queryTmp) === FALSE) {
+            $isError = TRUE;
+            $sStatus = $sStatus . "Запись в БД: ошибка. \n" . $db->error;
+        } else {
+            $sStatus = $sStatus . "Запись в БД: успешно. \n";
+        }
 
-    if($db->query($queryTmp) === FALSE) {
-        $isError = TRUE;
-        $sStatus = $sStatus . "Запись в БД: ошибка. \n" . $db->error;
     } else {
-        $sStatus = $sStatus . "Запись в БД: успешно. \n";
+        $fileInfo = new SplFileInfo($_FILES['fileToLoadID']['name']);
+        $fileExt = $fileInfo->getExtension();
+        $timeStamp = new dateTime();
+        $timeStampformated =  $timeStamp->format('d-m-Y');
+        $newFileName = $timeStamp->format('Ymd_Hisv') . "." . $fileExt;
+        $newTmpFileName = $timeStamp->format('Ymd_Hisv') . "_tmp." . $fileExt;
+        $uploadfile = getcwd() . $uploaddir . $newFileName;
+        $uploadtmpfile = getcwd() . $uploadtmpdir . $newTmpFileName;
+    
+        $queryTmp = "INSERT INTO instrum (`instrName`, `intrRemar`, `picPath`, `eventDate`) VALUES ('" . $toolNameTmp . "', '" . $toolRemarkTmp . "' , '" . $uploaddir . $newFileName . "' , STR_TO_DATE( '" . $timeStampformated . "', \"%d-%m-%Y\") )";
+
+        if($db->query($queryTmp) === FALSE) {
+            $isError = TRUE;
+            $sStatus = $sStatus . "Запись в БД: ошибка. \n" . $db->error;
+        } else {
+            $sStatus = $sStatus . "Запись в БД: успешно. \n";
+        }
+        if (move_uploaded_file($_FILES['fileToLoadID']['tmp_name'], $uploadtmpfile)) {
+            $sStatus = $sStatus . "Загрузка файла: успешно. \n";
+            $tmpImg = getcwd() . $uploaddir . "tmp1.jpg";
+            resizeToMaxView($uploadtmpfile, $uploadfile, $imgWtools);
+        } else {
+            $sStatus = $sStatus . "Загрузка файла: Ошибка. \n";
+            $isError = TRUE;
+        }
     }
-    if (move_uploaded_file($_FILES['fileToLoadID']['tmp_name'], $uploadfile)) {
-        $sStatus = $sStatus . "Загрузка файла: успешно. \n";;
-    } else {
-        $sStatus = $sStatus . "Загрузка файла: Ошибка. \n";
-        $isError = TRUE;
-    }
+
     $db->close();
     if($isError){
         echo($sStatus);
@@ -168,6 +194,7 @@ function toolCreate(){
 
 function editTool(){
     include "config.php";
+    include "img.php";
     $isError = FALSE;
     $sStatus = "";
     $db = dbConnect();
@@ -181,8 +208,10 @@ function editTool(){
     if(!empty($_FILES['fileToLoadID']['name'])){
                 $fileInfo = new SplFileInfo($_FILES['fileToLoadID']['name']);
                 $fileExt = $fileInfo->getExtension();
+                $newTmpFileName = $timeStamp->format('Ymd_Hisv') . "_tmp." . $fileExt;
                 $newFileName = $timeStamp->format('Ymd_Hisv') . "." . $fileExt;
                 $uploadfile = getcwd() . $uploaddir . $newFileName;
+                $uploadtmpfile = getcwd() . $uploadtmpdir . $newTmpFileName;
             
                 $queryTmp = "UPDATE instrum SET instrName = '" . $toolNameTmp . "', intrRemar = '" . $toolRemarkTmp . "', picPath = '" . $uploaddir . $newFileName . "' , eventDate = STR_TO_DATE( '" . $timeStampformated . "', \"%d-%m-%Y\") WHERE instrID = ". $toolIDtmp;
 
@@ -192,8 +221,10 @@ function editTool(){
             } else {
                 $sStatus = $sStatus . "Запись в БД: успешно. \n";
             }
-            if (move_uploaded_file($_FILES['fileToLoadID']['tmp_name'], $uploadfile)) {
-                $sStatus = $sStatus . "Загрузка файла: успешно. \n";;
+            if (move_uploaded_file($_FILES['fileToLoadID']['tmp_name'], $uploadtmpfile)) {
+                $sStatus = $sStatus . "Загрузка файла: успешно. \n";
+                $tmpImg = getcwd() . $uploaddir . "tmp1.jpg";
+                resizeToMaxView($uploadtmpfile, $uploadfile, $imgWtools);
             } else {
                 $sStatus = $sStatus . "Загрузка файла: Ошибка. \n";
                 $isError = TRUE;
@@ -524,5 +555,40 @@ function delToolsFromNab(){
         $message = "Удалено успешно!";
     }
     include $viewFolder . "neAddToolsToNabRez.php"; //remark
+}
+
+function editToolCopy(){
+    include "config.php";
+    $isError = FALSE;
+    $message = "";
+    $toolID = $_POST['toolID'];
+    if(empty($_POST['CopyCount'])){
+        $isError = TRUE;
+        $message = "Неуказано количество копий!";
+    } else {
+        $CopyCount = $_POST['CopyCount'];
+        $db = dbConnect();
+        $toolToCopyTmp = $db->query("SELECT * FROM instrum WHERE instrID = " . $toolID);
+        $toolToCopy = $toolToCopyTmp->fetch_assoc();
+        if(empty($toolToCopy)){
+            $isError = TRUE;
+            $message = $message . " Нет инструмента для копирования!";
+        } else { 
+            $timeStamp = new dateTime();
+            $timeStampformated =  $timeStamp->format('d-m-Y');
+            for ($i = 1; $i <= $CopyCount; $i++){
+                $tmpQuery = "INSERT INTO instrum (`instrName`,`intrRemar`,`picPath`,`isDeleted`,`eventDate`) VALUES ('" . $toolToCopy['instrName'] . "', '" . $toolToCopy['intrRemar'] . "', '" . $toolToCopy['picPath'] . "', 0 , STR_TO_DATE( '" . $timeStampformated . "', \"%d-%m-%Y\"))";
+                if($db->query($tmpQuery) === FALSE){
+                    $isError = TRUE;
+                    $messgae = "Запись не удалось!" . $db->error;
+                }
+            }
+        }
+    }
+    if(!$isError){
+        $message = "Скопировано успешно!";    
+    }
+    
+    include $viewFolder . "sts.php";
 }
 ?>
