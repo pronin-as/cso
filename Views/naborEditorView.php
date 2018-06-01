@@ -2,6 +2,23 @@
     function nabEditorInit(){
         ToolsRefresh();
         
+        $("#FindToolNab").unbind('keyup');
+        $("#FindToolNab").bind('keyup', function () {
+            var strLen = $("#FindToolNab").val();
+            if((strLen.trim().length >= 3) || (strLen.trim().length == 0)){
+                toolsToNabRef();
+            }
+        });
+        
+        $("#FindToolAll").unbind('keyup');
+        $("#FindToolAll").bind('keyup', function () {
+            var strLen = $("#FindToolAll").val();
+            if((strLen.trim().length >= 3) || (strLen.trim().length == 0)){
+                ToolsRefresh();
+            }
+        });
+        
+        
         $("#delFromNabToolID").unbind('click');
         $("#delFromNabToolID").bind('click', function (){
             var tt = $(".selectedRowL");
@@ -132,7 +149,7 @@
     
 /********** Список номенклатуры инструментов для страницы наборов **********/
      function ToolsRefresh(){  
-        $.post("tools.php", {func: "neToolsRefresh"}, function (data){
+        $.post("tools.php", {func: "neToolsRefresh", searchStr: $("#FindToolAll").val()}, function (data){
             $("#toolsSelectorID").html(data);
             $(".neNabSelectClassR").unbind('click');
             $(".neNabSelectClassR").bind('click', nabRightClickS);
@@ -196,14 +213,17 @@
 /********** Обновить состав набора выбранный в селекте левая таблица **********/
     function toolsToNabRef(){
         //alert("toolsToNabRef");
-        $.post("tools.php", {func: "neToolsToNabRef", nabID: $("#neNabSelectorID").val()}, function (data){
+        $.post("tools.php", {func: "neToolsToNabRef", nabID: $("#neNabSelectorID").val(), searchStr: $("#FindToolNab").val()}, function (data){
             $("#toolInNaborHolderID").html(data);
+            $(".imgIconClass").unbind('click');
+            $(".imgIconClass").bind('click', toolIconShow);
+            
             $(".neToolInNabSelectClassL").unbind('click');
             $(".neToolInNabSelectClassL").bind('click', nabLeftClickS);
             $(".selectedRowL").unbind('click');
             $(".selectedRowL").bind('click', nabLeftClickD);
-            $(".imgIconClass").unbind('click');
-            $(".imgIconClass").bind('click', toolIconShow);
+
+
         }, "html");
     }
     
@@ -269,46 +289,53 @@
 
         <section class="page__content content" id="mainContainerID">
 
-            <form class="content__item form form_big" id="topContainerID">
-                <div class="form__item">
+            <form class="content__item form form-row" id="topContainerID">
                     <label>Отделение</label>
-                    <div class="form_big__wrapper" id="otdSelectorHolderID"></div>
-                </div>
+                    <div class="form-row__wrapper" id="otdSelectorHolderID"></div>
 
-                <div class="form__item">
                     <label>Набор</label>
-                    <div class="form_big__wrapper" id="nabToOtdSelectorHolderID"></div>
+                    <div class="form-row__wrapper" id="nabToOtdSelectorHolderID"></div>
 
                     <button class="btn">Редактировать</button>
                     <button class="btn" id="addNabButtonID">Создать набор</button>
-                </div>
 
             </form>
 
+
+
             <div class="content__item row" id="bottomContainerID">
 
-                <div class="list__chosen" id="toolInNaborHolderID">
-                    <!--
-                    <h2>Состав набора</h2>
-                    <table>
-                        <tr><td>Ножницы</td><td><img src="img/detail.png"></td></tr>
-                        <tr><td>Долото</td><td><img src="img/detail.png"></td></tr>
-                    </table>
-                    -->
+                <div class="wrapper-nabor">
+
+                    <div class="search">
+                        <input class="search__element" type="text" placeholder="Поиск в наборе" id="FindToolNab">
+                    </div>
+
+                    <div class="nabor" id="toolInNaborHolderID"></div>
                 </div>
 
-                <div class="list__button" id="buttonHolderID">
+
+
+                <div class="wrapper-button" id="buttonHolderID">
                     <button class="arrow arrow_left v_free_space" id="addToNabButtonID">Добавить</button><br>
                     <button class="arrow arrow_right" id="delFromNabToolID">Удалить</button>
                 </div>
 
-                <div class="list__all" id="toolsSelectorID">
-                    <h2>Общий список инструментов</h2>
+
+                <div class="wrapper-tools">
+
+                    <div class="search">
+                        <input class="search__element" type="text" placeholder="Поиск во всей номенклатуре"  id="FindToolAll">
+                    </div>
+
+                    <div class="tools" id="toolsSelectorID"></div>
                 </div>
 
-                <div class="list__img-nabor photo" id="imagesContainerHolderID">
-                    <div class="photo__all" id="naborImgHolderID"></div>
-                    <div class="photo__item" id="toolImgHolderID"></div>
+
+
+                <div class="wrapper-img" id="imagesContainerHolderID">
+                    <div id="naborImgHolderID"></div>
+                    <!--<div class="photo__item" id="toolImgHolderID"></div>-->
                 </div>
             </div>
         </section>

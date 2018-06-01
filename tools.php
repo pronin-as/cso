@@ -470,12 +470,22 @@ function naborImgLoad() {
 function neToolsRefresh(){
     include "config.php";
     $db = dbConnect();
-    $queryTmp = "SELECT * FROM (
-        SELECT * FROM cso.instrum LEFT JOIN toolToNab ON instrum.instrID = toolToNab.instrumID
-        UNION
-        SELECT * FROM cso.instrum RIGHT JOIN toolToNab ON instrum.instrID = toolToNab.instrumID
-                    ) as freeTools WHERE isDeleted = 0 and ttnID is NULL";
-    $neToolsList = $db->query($queryTmp);
+    if(empty($_POST['searchStr'])){
+        $queryTmp = "SELECT * FROM (
+            SELECT * FROM cso.instrum LEFT JOIN toolToNab ON instrum.instrID = toolToNab.instrumID
+            UNION
+            SELECT * FROM cso.instrum RIGHT JOIN toolToNab ON instrum.instrID = toolToNab.instrumID
+                        ) as freeTools WHERE isDeleted = 0 and ttnID is NULL";
+        $neToolsList = $db->query($queryTmp);
+    } else {
+        $searchStr = $_POST['searchStr'];
+        $queryTmp = "SELECT * FROM (
+            SELECT * FROM cso.instrum LEFT JOIN toolToNab ON instrum.instrID = toolToNab.instrumID
+            UNION
+            SELECT * FROM cso.instrum RIGHT JOIN toolToNab ON instrum.instrID = toolToNab.instrumID
+                        ) as freeTools WHERE isDeleted = 0 and ttnID is NULL and instrName LIKE '%" . $searchStr . "%'";
+        $neToolsList = $db->query($queryTmp);
+    }
     //$neToolsList = $db->query("SELECT * FROM instrum WHERE isDeleted = 0");
     include $viewFolder . "neToolsSelectorView.php";
     $neToolsList->free();
@@ -486,7 +496,13 @@ function neToolsToNabRef(){
     include "config.php";
     $nabID = $_POST['nabID'];
     $db = dbConnect();
-    $neToolsToNabList = $db->query("SELECT * FROM instrToNabView WHERE nabID = ". $nabID . " and instrDeleted = 0");
+    if(empty($_POST['searchStr'])){
+        $neToolsToNabList = $db->query("SELECT * FROM instrToNabView WHERE nabID = ". $nabID . " and instrDeleted = 0");
+    } else {
+        $searchStr = $_POST['searchStr'];
+        $tmpQuery = "SELECT * FROM instrToNabView WHERE nabID = ". $nabID . " and instrDeleted = 0 and instrName LIKE '%" . $searchStr . "%'";
+        $neToolsToNabList = $db->query($tmpQuery);
+    }
     include $viewFolder . "neToolsToNabView.php";
     $neToolsToNabList->free();
     $db->close();

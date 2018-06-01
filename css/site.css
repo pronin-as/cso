@@ -1,9 +1,9 @@
 /* -------------- general ------------------------------------ */
 /*
-@base_color: #215585;           �������� ����� (������� �����, ���� ������ �� ���� ������, ����� ������)
-@base_darken_color:#183E62;     �����-����� (���� ������, ������������ �� ����� ����� ����� ��� ������-������ ��� hover)
-@lighten_base_color: white;     ����� (���� ������ � ���������, � �������)
-@brigh_color: #D7F734;          ����� ������� (��� � ������� (��������� active), ������ ����� ��� ������� ���� � ������� ���������)
+@base_color: #215585;           вджщ
+@base_darken_color:#183E62;
+@lighten_base_color: white;
+@brigh_color: #D7F734;
 */
 
 /* test git */
@@ -161,6 +161,8 @@ html {
 }
 
 .row__item{
+    height:70vh;
+    overflow:auto;
 }
 
 .row__item_80{
@@ -244,14 +246,15 @@ html {
     border:1px solid #D0F033;
 }
 
+/*
 .form_big{
 
 }
 
 .form_big .form__item{
-    display: inline-block;
-    width: 100%;
-    margin:10px 0;
+    //display: inline-block;
+    //width: 100%;
+    //margin:10px 0;
 }
 
 .form_big label{
@@ -266,6 +269,15 @@ html {
 .form_big__select{
     display: inline-block;
     width:400px;
+}
+*/
+
+.form-row__wrapper{
+    display:inline-block;
+    width:20%;
+}
+.form-row__wrapper select{
+    width:100%;
 }
 
 /* ---------------------- ed_place ------------------------------------ */
@@ -304,28 +316,49 @@ html {
 }
 */
 
-/* ---------------------- list ----------------------------------- */
+/* ---------------------- wrapper -------------------------------- */
 
-.list__chosen{
+.wrapper-nabor{
     width: 20%;
     float: left;
-    //background-color:#EDF8FF;
+
 }
 
-.list__button{
+.wrapper-button{
     padding: 0 5px 0 5px;
     float: left;
 }
 
-.list__all{
+.wrapper-tools{
     width: 20%;
     float: left;
-    background-color:#EDF8FF;
 }
 
-.list__img-nabor{
-    width:50%;
+.wrapper-img{
+    margin-left:5px;
+    width:60%;
 }
+
+.wrapper-img img{
+    width:100%;
+}
+/* --------------------------------------------------------------- */
+
+.nabor{
+    width:100%;
+    height:70vh;
+    overflow:auto;
+}
+
+.tools{
+    width:100%;
+    height:70vh;
+    overflow:auto;
+}
+
+
+/* ---------------------- list ----------------------------------- */
+
 
 .list__item{
     background-color:#EDF8FF;
@@ -340,6 +373,9 @@ html {
 }
 
 .list__tool{
+    display:inline-block;
+    width:77%;
+    //height:100%;
 }
 
 .list__desc{
@@ -351,7 +387,14 @@ html {
 }
 
 .list__img{
+    display:inline-block;
+    width:20%;
+    //height:100%;
 
+}
+.list__img img{
+    width:100%;
+    border-radius:2px;
 }
 
 /* ---------------------- photo ---------------------------------- */
@@ -444,6 +487,24 @@ html {
     color:#183F64;
 }
 
+/* ------------------------- search --------------------------------- */
+
+
+.search__element{
+    width: 100%;
+    box-sizing: border-box;
+    border:1px solid #215585;
+    padding: 0.3em;
+    color: inherit;
+    font-family: inherit;
+    font-size: 1em;
+    transition-duration:400ms;
+    margin-bottom: 5px;
+}
+
+.search__element:focus{
+    border:1px solid #D0F033;
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -511,11 +572,11 @@ tr:hover{
 
 
 .selectedRowR {
-    background-color: #a5a5a5;
+    background-color: #B2E1FF;
 }
 
 .selectedRowL {
-    background-color: #a5a5a5;
+    background-color: #B2E1FF;
 }
 /*
 #dlgId {

@@ -1,4 +1,4 @@
-<select class="form__element form_big__select" id="neNabSelectorID">
+<select class="form__element" id="neNabSelectorID">
 <? if($snNabTmp == "isEmpty"){?>
     <option value="9999999">Нет наборов</option>
 <?} else {
