@@ -55,9 +55,59 @@
             
         });
         
+        
+        $("#editNabButtonID").unbind('click');
+        $("#editNabButtonID").bind('click', function (){
+            alert("123");
+            $.post("tools.php", {func: "editNab", nabID: $('#neNabSelectorID').val()}, editNabDlgFunc, "html");
+        });
+        
+        $("#addNabButtonID").unbind('click');
         $("#addNabButtonID").bind('click', function () {
-            $.post("tools.php", {func: "neNewNabDlg", otdID: $("#neOtdSelectorID").val()}, function (data){
-                $("#dlgId").html(data);
+            $.post("tools.php", {func: "neNewNabDlg", otdID: $("#neOtdSelectorID").val()}, editNabDlgFunc, "html");
+            });
+    } //end of nabEditorInit
+
+   function editNabDlgFunc(data){
+        $("#dlgId").html(data);
+ /*******************************************************************************/               
+       function imgNabStageShow(){
+           $.post("tools.php", {func: "smallImgView", nabID: $('#tmpNabID').val()}, function (data) {
+               $("#addedImgID").html(data);
+           }, "html");
+       }
+       
+                $("#imgNabStageID").unbind('onchange');
+                $("#imgNabStageID").bind('change', function () {
+                    alert("ono");
+            
+                    var $input = $("#imgNabStageID");
+                    var fd = new FormData;
+
+                fd.append('fileToLoadID', $input.prop('files')[0]);
+                fd.append('func','loadImgNabToStage');
+                fd.append('nabID', $('#tmpNabID').val());
+                fd.append('nabName', $("#nabDlgID").val());
+
+                    $.ajax({
+                            url: 'tools.php',
+                            data: fd,
+                            processData: false,
+                            contentType: false,
+                            type: 'POST',
+                            success: function (data) {
+                                    if(data == "ok"){
+                                        alert("Сохранено успешно.");
+                                        imgNabStageShow();
+                                  //      $("#dlgId").html("");
+                                  //      $("#dlgId").css("display","none");
+
+                                   } else {
+                                       alert("Сохранить неудалось." + data);
+                                   }
+                                }
+                            }); 
+                });
                 
                 $("#editNabDlgCloseButtonID").unbind('click');
                 $("#editNabDlgCloseButtonID").bind('click', function () {
@@ -100,13 +150,14 @@
                    }
                 if($("#operType").val() == "editNab"){
                     alert("editTool");
-                    var $input = $("#fileToLoadID");
+                    var $input = $("#fileNabToLoadID");
                     var fd = new FormData;
 
                 fd.append('fileToLoadID', $input.prop('files')[0]);
                 fd.append('func','neEditNab');
                 fd.append('otdID', $("#neOtdSelectorID").val());
                 fd.append('nabName', $("#nabDlgID").val());
+                fd.append('nabID', $("#tmpNabID").val());
 
                     $.ajax({
                             url: 'tools.php',
@@ -130,16 +181,9 @@
                     
                     nabOtdRefresh;
             });
-            
-            
+            imgNabStageShow();
             $("#dlgId").css("display","block");
-                    
-                    
-                }, "html");
-                
-                $("#dlgId").css("display", "block");
-            });
-    }
+   }
     
     function nabToolRefresh(){
         $.post("tools.php", {func: "nabToolRefresh"}, function (data){
@@ -296,7 +340,7 @@
                     <label>Набор</label>
                     <div class="form-row__wrapper" id="nabToOtdSelectorHolderID"></div>
 
-                    <button class="btn">Редактировать</button>
+                    <button class="btn" id="editNabButtonID">Редактировать</button>
                     <button class="btn" id="addNabButtonID">Создать набор</button>
 
             </form>

@@ -1,5 +1,8 @@
 <h4><?=$dlgNabCaption?> <?=$nabIDtmp?> </h4>
 <h5>Отделение: <?=$otdName?></h5>
+<table>
+    <tr>
+        <td>
             <table>
                 <tr>
                     <td><span>Наименование набора</span></td><td><input type="text" value="<?=$nab["nabName"]?>" id="nabDlgID"></td>
@@ -19,5 +22,12 @@
                     </td>
                 </tr>
             </table>
+        </td>
+    <? if($operType == "editNab") {
+        echo "<td><div id=\"addedImgID\"></div>";
+        echo "<td><span>Изображения этапов</span></td><td><input type=\"file\" id=\"imgNabStageID\" /></td></td>";
+       } ?>
+    </tr>
+</table>
 <input type="hidden" id="tmpNabID" value="<?=$nabIDtmp?>">
 <input type="hidden" id="operType" value="<?=$operType?>">

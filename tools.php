@@ -82,6 +82,20 @@ if(isset($_POST['func']) ) {
         case 'editToolCopy':
             editToolCopy();
         break;
+        case 'editNab':
+            editNab();
+        break;
+        case 'neEditNab':
+            neEditNab();
+        break;
+        case 'loadImgNabToStage':
+            loadImgNabToStage();
+        break;
+        case 'smallImgView':
+            smallImgView();
+        break;
+        
+        
     }
 }
 
@@ -606,5 +620,116 @@ function editToolCopy(){
     }
     
     include $viewFolder . "sts.php";
+}
+
+function editNab(){
+    include "config.php";
+    $nabID = $_POST['nabID'];
+    $db = dbConnect();
+    $tmpNab = $db->query("SELECT * FROM nabDict WHERE nabID = ". $nabID); 
+    $nab = $tmpNab->fetch_assoc();
+    $tmpOtd = $db->query("SELECT * FROM sOtd WHERE idOtd = " . $nab['nabOtd']);
+    $tmpOtdAssoc = $tmpOtd->fetch_assoc();
+    $otdName = $tmpOtdAssoc['nameOtd'];
+    $nabIDtmp = $nabID;
+    $operType = "editNab";
+    $delButton = 1;
+    $dlgNabCaption = "Редактирование набора.";
+    include $viewFolder . "nabEditDlg.php";
+}
+
+function neEditNab(){
+    include "config.php";
+    $isError = FALSE;
+    $sStatus = "";
+    $db = dbConnect();
+    $otdID = $_POST['otdID'];
+    $nabName = $_POST['nabName'];
+    $nabID = $_POST['nabID'];
+    $timeStamp = new dateTime();
+    $timeStampformated =  $timeStamp->format('d-m-Y');
+
+    if(!empty($_FILES['fileToLoadID']['name'])){
+        $fileInfo = new SplFileInfo($_FILES['fileToLoadID']['name']);
+        $fileExt = $fileInfo->getExtension();
+        $newFileName = $timeStamp->format('Ymd_Hisv') . "." . $fileExt;
+        $uploadfile = getcwd() . $uploaddir . $newFileName;
+        
+        $queryTmp = "UPDATE nabDict SET nabName = '" . $nabName . "', nabImg = '" . $uploaddir . $newFileName . "', eventDate = STR_TO_DATE( '" . $timeStampformated . "', \"%d-%m-%Y\") WHERE nabID = " . $nabID;
+
+        if($db->query($queryTmp) === FALSE) {
+            $isError = TRUE;
+            $sStatus = $sStatus . "Запись в БД: ошибка. \n" . $db->error;
+        } else {
+            $sStatus = $sStatus . "Запись в БД: успешно. \n";
+        }
+        if (move_uploaded_file($_FILES['fileToLoadID']['tmp_name'], $uploadfile)) {
+            $sStatus = $sStatus . "Загрузка файла: успешно. \n";;
+        } else {
+            $sStatus = $sStatus . "Загрузка файла: Ошибка. \n";
+            $isError = TRUE;
+        }
+    } else {
+        $queryTmp = "UPDATE nabDict SET nabName = '" . $nabName . "', eventDate  = STR_TO_DATE( '" . $timeStampformated . "', \"%d-%m-%Y\") WHERE nabID = " . $nabID;
+        if($db->query($queryTmp) === FALSE) {
+            $isError = TRUE;
+            $sStatus = $sStatus . "Запись в БД: ошибка. \n" . $db->error;
+        } else {
+            $sStatus = $sStatus . "Запись в БД: успешно. \n";
+        }
+    }
+    $db->close();
+    if($isError){
+        echo($sStatus);
+    } else {
+        echo("ok");
+    }
+}
+
+function loadImgNabToStage(){
+    include "config.php";
+    $isError = FALSE;
+    $sStatus = "";
+    $nabID = $_POST['nabID'];
+    if(empty($_FILES['fileToLoadID']['name'])){
+    } else {
+        $timeStamp = new dateTime();
+        $timeStampformated =  $timeStamp->format('d-m-Y');
+        $fileInfo = new SplFileInfo($_FILES['fileToLoadID']['name']);
+        $fileExt = $fileInfo->getExtension();
+        $newFileName = $timeStamp->format('Ymd_Hisv') . "." . $fileExt;
+        $uploadfile = getcwd() . $uploaddir . $newFileName;
+
+        $db = dbConnect();
+        $tmpQuery = "INSERT INTO `cso`.`imgToNab` (`naborID`, `imgn`, `preor`) VALUES (" . $nabID . ", '" . $uploaddir . $newFileName . "', 1)";
+        if($db->query($tmpQuery) === FALSE) {
+            $isError = TRUE;
+            $sStatus = $sStatus . "Запись в БД: ошибка. \n" . $db->error;
+        } else {
+            $sStatus = $sStatus . "Запись в БД: успешно. \n";
+        }
+        if (move_uploaded_file($_FILES['fileToLoadID']['tmp_name'], $uploadfile)) {
+            $sStatus = $sStatus . "Загрузка файла: успешно. \n";;
+        } else {
+            $sStatus = $sStatus . "Загрузка файла: Ошибка. \n";
+            $isError = TRUE;
+        }
+
+
+        if($isError){
+            echo($sStatus);
+        } else {
+            echo("ok");
+        }
+    }
+}
+
+function smallImgView(){
+    include "config.php";
+    $nabID = $_POST['nabID'];
+    $db= dbConnect();
+    $tmpImgs = $db->query("SELECT * FROM imgToNab WHERE naborId = " . $nabID);
+    $imgs = $tmpImgs->fetch_all(MYSQLI_ASSOC);
+    include $viewFolder . "smallImgView.php";
 }
 ?>
